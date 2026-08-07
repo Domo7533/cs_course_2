@@ -888,3 +888,489 @@ Computer Scientist | Software Developer | Digital Skills Trainer
 
 \*"Learning Object-Oriented Programming is the foundation for building scalable, maintainable, and professional software applications."\*
 
+C# Access Modifiers
+
+Overview
+
+Access modifiers in C# control the visibility and accessibility ofclasses, fields, properties, methods, and other members.
+
+They are an important part of Object-Oriented Programming (OOP)because they help implement encapsulation by controlling which partsof a class can be accessed from outside.
+
+Learning Objectives
+
+By the end of this lesson, you should be able to:
+
+Explain what access modifiers are.
+
+Differentiate between public and private.
+
+Identify when to use public members.
+
+Identify when to use private members.
+
+Apply access modifiers in C# classes.
+
+Understand how access modifiers support encapsulation.
+
+Common C# Access Modifiers
+
+C# provides several access modifiers:
+
+Modifier                            Accessibility
+
+public                            Accessible from anywhere
+
+private                           Accessible only within thecontaining class/type
+
+protected                         Accessible within the containingclass and derived classes
+
+internal                          Accessible within the sameassembly/project
+
+protected internal                Accessible from the same assemblyor derived classes
+
+For beginners, the most important modifiers to understand first arepublic and private.
+
+1. Public Access Modifier
+
+The public modifier makes a member accessible from other classes.
+
+Example
+
+using System;
+
+class Student
+{
+    public string Name;
+
+    public void DisplayName()
+    {
+        Console.WriteLine(Name);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Student student = new Student();
+
+        student.Name = "John";
+        student.DisplayName();
+    }
+}
+
+Output
+
+John
+
+The Name property and DisplayName() method are public, so they canbe accessed from Program.
+
+When to Use public
+
+Use public when:
+
+Other classes need to access a member.
+
+You want to expose functionality to users of a class.
+
+A method represents an operation that other parts of the programshould be able to perform.
+
+2. Private Access Modifier
+
+The private modifier restricts access to the containing class.
+
+Example
+
+using System;
+
+class BankAccount
+{
+    private decimal balance;
+
+    public void Deposit(decimal amount)
+    {
+        balance += amount;
+    }
+
+    public void DisplayBalance()
+    {
+        Console.WriteLine($"Balance: ₦{balance}");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        BankAccount account = new BankAccount();
+
+        account.Deposit(10000);
+        account.DisplayBalance();
+
+        // account.balance = 50000; // ERROR
+    }
+}
+
+The balance field is private, so it cannot be accessed directly fromProgram.
+
+Instead, the class controls access through public methods such asDeposit().
+
+3. Public vs Private
+
+Consider a bank account.
+
+class BankAccount
+{
+    private decimal balance;
+
+    public void Deposit(decimal amount)
+    {
+        if (amount > 0)
+        {
+            balance += amount;
+        }
+    }
+
+    public decimal GetBalance()
+    {
+        return balance;
+    }
+}
+
+Here:
+
+balance is private because it should be protected.
+
+Deposit() is public because users need to deposit money.
+
+GetBalance() is public because users may need to check theirbalance.
+
+This is an example of encapsulation.
+
+4. Why Use Private Members?
+
+Private members prevent other classes from changing data incorrectly.
+
+Without Encapsulation
+
+class Student
+{
+    public double GPA;
+}
+
+Another class could do:
+
+student.GPA = 100;
+
+This may produce an invalid GPA.
+
+With Encapsulation
+
+class Student
+{
+    private double gpa;
+
+    public void SetGPA(double value)
+    {
+        if (value >= 0 && value <= 5)
+        {
+            gpa = value;
+        }
+    }
+
+    public double GetGPA()
+    {
+        return gpa;
+    }
+}
+
+Now the class controls how the GPA is changed.
+
+Student student = new Student();
+
+student.SetGPA(4.5);
+
+Console.WriteLine(student.GetGPA());
+
+5. Private Helper Methods
+
+A method can also be private when it is only needed internally.
+
+class Calculator
+{
+    public int Square(int number)
+    {
+        return Multiply(number, number);
+    }
+
+    private int Multiply(int a, int b)
+    {
+        return a * b;
+    }
+}
+
+Square() is public because other classes need to use it.
+
+Multiply() is private because it is an internal implementation detail.
+
+6. Real-World Example: Employee
+
+using System;
+
+class Employee
+{
+    public string Name { get; set; }
+
+    private decimal salary;
+
+    public void SetSalary(decimal amount)
+    {
+        if (amount > 0)
+        {
+            salary = amount;
+        }
+    }
+
+    public decimal GetSalary()
+    {
+        return salary;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Employee employee = new Employee();
+
+        employee.Name = "Grace";
+        employee.SetSalary(250000);
+
+        Console.WriteLine(employee.Name);
+        Console.WriteLine(employee.GetSalary());
+    }
+}
+
+Why?
+
+Member          Modifier    Reason
+
+Name          public    Other classes need to access the employee's namesalary        private   Salary should be controlled internallySetSalary()   public    Allows controlled salary updatesGetSalary()   public    Allows the salary to be retrieved
+
+7. Access Modifier Comparison
+
+Feature                            public                      private
+
+Accessible inside the same class   Yes                           YesAccessible from another class      Yes                           NoAccessible from derived classes    Yes                           NoProvides data hiding               No                            YesSupports encapsulation             Yes, when carefully exposed   YesCommon use                         Public interface/API          Internal implementation
+
+8. Best Practice
+
+A common OOP principle is:
+
+Keep members private by default and expose only what other classesactually need.
+
+For example, prefer:
+
+class BankAccount
+{
+    private decimal balance;
+
+    public void Deposit(decimal amount)
+    {
+        if (amount > 0)
+        {
+            balance += amount;
+        }
+    }
+}
+
+Instead of:
+
+class BankAccount
+{
+    public decimal balance;
+}
+
+The first approach gives the class control over its data.
+
+9. Public Properties with Private Fields
+
+A common C# pattern is to use a private field with a public property orcontrolled methods.
+
+class Student
+{
+    private string name;
+
+    public string Name
+    {
+        get { return name; }
+        set { name = value; }
+    }
+}
+
+A shorter version uses an auto-property:
+
+class Student
+{
+    public string Name { get; set; }
+}
+
+For more control, validation can be added:
+
+class Student
+{
+    private int age;
+
+    public int Age
+    {
+        get { return age; }
+        set
+        {
+            if (value >= 0)
+            {
+                age = value;
+            }
+        }
+    }
+}
+
+10. Access Modifiers and Encapsulation
+
+Encapsulation means keeping an object's data and implementationdetails protected while providing controlled ways to interact with theobject.
+
+For example:
+
+             BankAccount
+        ┌─────────────────────┐
+        │ private balance     │
+        │                     │
+        │ public Deposit()    │
+        │ public GetBalance() │
+        └──────────┬──────────┘
+                   │
+             Controlled Access
+                   │
+                   ▼
+             Other Classes
+
+The outside world interacts with the object through its public interfacerather than directly modifying its internal data.
+
+11. Practice Exercise
+
+Create a Car class with:
+
+A private field called speed.
+
+A public method called Accelerate().
+
+A public method called Brake().
+
+A public method called DisplaySpeed().
+
+Prevent speed from being accessed directly from Main().
+
+Starter Code
+
+using System;
+
+class Car
+{
+    // Add your private speed field here
+
+    // Add Accelerate() here
+
+    // Add Brake() here
+
+    // Add DisplaySpeed() here
+}
+
+class Program
+{
+    static void Main()
+    {
+        Car car = new Car();
+
+        // Test your methods here
+    }
+}
+
+12. Key Takeaways
+
+public allows access from other classes.
+
+private restricts access to the containing class.
+
+Private members help protect data.
+
+Public methods can provide controlled access to private data.
+
+Access modifiers are fundamental to encapsulation.
+
+Avoid making everything public.
+
+Expose only the functionality that other classes actually need.
+
+Quick Rule
+
+Does another class need direct access?
+        │
+       Yes
+        │
+        ▼
+     public
+
+       No
+        │
+        ▼
+     private
+
+Recommended Principle
+
+Hide implementation details and expose a clear public interface.
+
+Technologies
+
+C#
+
+.NET
+
+Object-Oriented Programming (OOP)
+## Getters and Setters in C#
+
+### Overview
+
+**Getters and setters** are used to control how data is accessed and modified in a class.
+
+In C#, they are commonly implemented using **properties**.
+
+- **Getter (`get`)** → Retrieves the value of a property.
+- **Setter (`set`)** → Assigns or changes the value of a property.
+
+They are important for **encapsulation**, because they allow a class to control access to its internal data.
+
+---
+
+## Basic Example
+
+```csharp
+class Student
+{
+    private string name;
+
+    public string Name
+    {
+        get
+        {
+            return name;
+        }
+
+        set
+        {
+            name = value;
+        }
+    }
+}
+
+Author
+
+Domo Ereku
