@@ -1371,6 +1371,542 @@ class Student
     }
 }
 
+
+# Inheritance in C#
+
+## Overview
+
+**Inheritance** is an Object-Oriented Programming (OOP) concept that allows one class to **inherit properties and methods from another class**.
+
+The existing class is called the **base class** (or parent class), while the class that inherits from it is called the **derived class** (or child class).
+
+Inheritance promotes **code reuse**, reduces duplication, and allows classes to represent relationships between objects.
+
+---
+
+## Basic Syntax
+
+```csharp
+class BaseClass
+{
+    // Members of the base class
+}
+
+class DerivedClass : BaseClass
+{
+    // Members of the derived class
+}
+```
+
+The colon (`:`) indicates that the derived class inherits from the base class.
+
+---
+
+## Simple Example
+
+```csharp
+class Vehicle
+{
+    public void Start()
+    {
+        Console.WriteLine("Vehicle is starting.");
+    }
+}
+
+class Car : Vehicle
+{
+    public void Drive()
+    {
+        Console.WriteLine("Car is driving.");
+    }
+}
+```
+
+The `Car` class inherits the `Start()` method from `Vehicle`.
+
+### Using the Classes
+
+```csharp
+Car car = new Car();
+
+car.Start();
+car.Drive();
+```
+
+Output:
+
+```text
+Vehicle is starting.
+Car is driving.
+```
+
+The `Car` object can use:
+
+* `Start()` → inherited from `Vehicle`
+* `Drive()` → defined in `Car`
+
+---
+
+## Inheritance Hierarchy
+
+A simple inheritance relationship can be represented as:
+
+```text
+Vehicle
+   |
+   ↓
+  Car
+```
+
+Here:
+
+* `Vehicle` is the **base class**.
+* `Car` is the **derived class**.
+
+---
+
+## Multilevel Inheritance
+
+Inheritance can occur across multiple levels.
+
+```text
+Vehicle
+   |
+   ↓
+  Car
+   |
+   ↓
+ElectricCar
+```
+
+### Example
+
+```csharp
+class Vehicle
+{
+    public void Start()
+    {
+        Console.WriteLine("Vehicle started.");
+    }
+}
+
+class Car : Vehicle
+{
+    public void Drive()
+    {
+        Console.WriteLine("Car is driving.");
+    }
+}
+
+class ElectricCar : Car
+{
+    public void ChargeBattery()
+    {
+        Console.WriteLine("Battery is charging.");
+    }
+}
+```
+
+### Usage
+
+```csharp
+ElectricCar car = new ElectricCar();
+
+car.Start();
+car.Drive();
+car.ChargeBattery();
+```
+
+The `ElectricCar` object can access methods from both `Car` and `Vehicle`.
+
+---
+
+## Hierarchical Inheritance
+
+Hierarchical inheritance occurs when **multiple classes inherit from the same base class**.
+
+```text
+          Vehicle
+         /       \
+        ↓         ↓
+      Car       Truck
+```
+
+### Example
+
+```csharp
+class Vehicle
+{
+    public void Start()
+    {
+        Console.WriteLine("Vehicle started.");
+    }
+}
+
+class Car : Vehicle
+{
+    public void Drive()
+    {
+        Console.WriteLine("Car is driving.");
+    }
+}
+
+class Truck : Vehicle
+{
+    public void LoadCargo()
+    {
+        Console.WriteLine("Loading cargo.");
+    }
+}
+```
+
+Both `Car` and `Truck` inherit `Start()` from `Vehicle`.
+
+---
+
+## Inheritance with Properties
+
+A derived class can also use properties inherited from its base class.
+
+```csharp
+class Person
+{
+    public string Name { get; set; }
+}
+
+class Student : Person
+{
+    public int StudentId { get; set; }
+}
+```
+
+Usage:
+
+```csharp
+Student student = new Student();
+
+student.Name = "John";
+student.StudentId = 101;
+
+Console.WriteLine(student.Name);
+Console.WriteLine(student.StudentId);
+```
+
+Output:
+
+```text
+John
+101
+```
+
+`Name` comes from `Person`, while `StudentId` belongs to `Student`.
+
+---
+
+## Protected Members and Inheritance
+
+The `protected` access modifier is particularly useful with inheritance.
+
+A `protected` member can be accessed:
+
+* Inside the class where it is declared.
+* Inside classes that inherit from it.
+
+### Example
+
+```csharp
+class Vehicle
+{
+    protected int speed;
+
+    public void DisplaySpeed()
+    {
+        Console.WriteLine($"Speed: {speed} km/h");
+    }
+}
+
+class Car : Vehicle
+{
+    public void Accelerate()
+    {
+        speed += 10;
+    }
+}
+```
+
+The `Car` class can access `speed` because it is `protected`.
+
+However, external classes cannot directly access it:
+
+```csharp
+Car car = new Car();
+
+// car.speed = 100; // ERROR
+```
+
+---
+
+## Method Overriding
+
+Inheritance also allows a derived class to provide its own implementation of a method.
+
+The base method must be declared with `virtual`, while the derived method uses `override`.
+
+```csharp
+class Animal
+{
+    public virtual void Speak()
+    {
+        Console.WriteLine("Animal makes a sound.");
+    }
+}
+
+class Dog : Animal
+{
+    public override void Speak()
+    {
+        Console.WriteLine("Dog barks.");
+    }
+}
+```
+
+Usage:
+
+```csharp
+Dog dog = new Dog();
+
+dog.Speak();
+```
+
+Output:
+
+```text
+Dog barks.
+```
+
+This is an example of **polymorphism**.
+
+---
+
+## The `base` Keyword
+
+The `base` keyword is used to access members of the parent class.
+
+### Example
+
+```csharp
+class Vehicle
+{
+    public string Brand { get; set; }
+
+    public Vehicle(string brand)
+    {
+        Brand = brand;
+    }
+}
+
+class Car : Vehicle
+{
+    public string Model { get; set; }
+
+    public Car(string brand, string model)
+        : base(brand)
+    {
+        Model = model;
+    }
+}
+```
+
+Here:
+
+```csharp
+: base(brand)
+```
+
+calls the constructor of the `Vehicle` class.
+
+---
+
+## Why Use Inheritance?
+
+Inheritance provides several advantages:
+
+### 1. Code Reuse
+
+Common functionality can be placed in a base class instead of being repeated.
+
+### 2. Maintainability
+
+Changes to shared functionality can be made in one place.
+
+### 3. Extensibility
+
+Derived classes can add new properties and methods.
+
+### 4. Polymorphism
+
+Different derived classes can provide different implementations of the same method.
+
+### 5. Logical Relationships
+
+Inheritance models relationships such as:
+
+```text
+Vehicle → Car
+Animal → Dog
+Person → Student
+Employee → Manager
+Product → Smartphone
+```
+
+---
+
+## Inheritance vs Composition
+
+Inheritance represents an **"is-a"** relationship.
+
+```text
+Car is a Vehicle
+Dog is an Animal
+Student is a Person
+```
+
+Composition represents a **"has-a"** relationship.
+
+```text
+Car has an Engine
+Computer has a Processor
+House has a Room
+```
+
+Use inheritance when there is a genuine **is-a relationship**.
+
+---
+
+## Common Types of Inheritance
+
+| Type         | Description                                    | Example                               |
+| ------------ | ---------------------------------------------- | ------------------------------------- |
+| Single       | One derived class inherits from one base class | `Vehicle → Car`                       |
+| Multilevel   | Inheritance occurs across multiple levels      | `Vehicle → Car → ElectricCar`         |
+| Hierarchical | Multiple classes inherit from one base class   | `Vehicle → Car/Truck`                 |
+| Multiple     | One class inherits from multiple classes       | Not supported directly for C# classes |
+| Hybrid       | Combination of inheritance structures          | Possible using classes and interfaces |
+
+> C# does not support multiple inheritance of classes, but a class can implement multiple interfaces.
+
+---
+
+## Complete Example
+
+```csharp
+using System;
+
+class Vehicle
+{
+    public string Brand { get; set; }
+
+    public Vehicle(string brand)
+    {
+        Brand = brand;
+    }
+
+    public virtual void Start()
+    {
+        Console.WriteLine($"{Brand} vehicle is starting.");
+    }
+}
+
+class Car : Vehicle
+{
+    public string Model { get; set; }
+
+    public Car(string brand, string model)
+        : base(brand)
+    {
+        Model = model;
+    }
+
+    public override void Start()
+    {
+        Console.WriteLine($"{Brand} {Model} car is starting.");
+    }
+}
+
+class ElectricCar : Car
+{
+    public int BatteryCapacity { get; set; }
+
+    public ElectricCar(
+        string brand,
+        string model,
+        int batteryCapacity)
+        : base(brand, model)
+    {
+        BatteryCapacity = batteryCapacity;
+    }
+
+    public void Charge()
+    {
+        Console.WriteLine("Electric car is charging.");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        ElectricCar car =
+            new ElectricCar("Tesla", "Model 3", 75);
+
+        car.Start();
+        car.Charge();
+
+        Console.WriteLine(
+            $"Battery: {car.BatteryCapacity} kWh");
+    }
+}
+```
+
+### Output
+
+```text
+Tesla Model 3 car is starting.
+Electric car is charging.
+Battery: 75 kWh
+```
+
+---
+
+## Key Takeaways
+
+* **Inheritance** allows a class to acquire members from another class.
+* The **base class** contains common functionality.
+* The **derived class** inherits and extends the base class.
+* Use `:` to specify inheritance.
+* Use `protected` when derived classes need access to a member.
+* Use `virtual` and `override` to implement method overriding.
+* Use `base` to access the parent class's constructor or members.
+* Inheritance represents an **"is-a" relationship**.
+* C# supports single, multilevel, and hierarchical class inheritance.
+* C# does **not** support multiple inheritance between classes.
+
+### Quick Reference
+
+```text
+Base Class
+    │
+    │ inherits
+    ▼
+Derived Class
+    │
+    │ can extend
+    ▼
+Additional Functionality
+```
+
+**Recommended principle:** Use inheritance when the derived class genuinely represents a specialized version of the base class.
+
 Author
 
 Domo Ereku
