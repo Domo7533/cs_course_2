@@ -1907,6 +1907,108 @@ Additional Functionality
 
 **Recommended principle:** Use inheritance when the derived class genuinely represents a specialized version of the base class.
 
+
+# Method Overriding
+
+## Overview
+
+Method overriding is an object-oriented programming concept that allows a **derived class** to provide a specific implementation of a method that is already defined in its **base class**.
+
+In C#, the base-class method is declared using the `virtual` keyword, while the derived class uses the `override` keyword to provide its own implementation.
+
+## Example
+
+```csharp
+class Shape
+{
+    public virtual void Draw()
+    {
+        Console.WriteLine("Drawing a generic shape.");
+    }
+}
+
+class Circle : Shape
+{
+    public override void Draw()
+    {
+        Console.WriteLine("Drawing a circle.");
+    }
+}
+
+class Rectangle : Shape
+{
+    public override void Draw()
+    {
+        Console.WriteLine("Drawing a rectangle.");
+    }
+}
+```
+
+In this example:
+
+* `Shape` is the base class.
+* `Draw()` is the virtual method.
+* `Circle` overrides `Draw()` with its own implementation.
+* `Rectangle` also overrides `Draw()` with its own implementation.
+
+## Polymorphism
+
+Method overriding enables **runtime polymorphism**, where a base-class reference can refer to an object of a derived class.
+
+```csharp
+Shape shape1 = new Circle();
+Shape shape2 = new Rectangle();
+
+shape1.Draw();
+shape2.Draw();
+```
+
+### Output
+
+```text
+Drawing a circle.
+Drawing a rectangle.
+```
+
+Although `shape1` and `shape2` are declared as `Shape`, the appropriate overridden `Draw()` method is called based on the actual object type.
+
+## Key Concepts
+
+| Keyword      | Purpose                                                                |
+| ------------ | ---------------------------------------------------------------------- |
+| `virtual`    | Allows a base-class method to be overridden                            |
+| `override`   | Provides a new implementation in a derived class                       |
+| `base`       | Allows access to the base-class implementation                         |
+| Polymorphism | Allows one base-class reference to represent different derived objects |
+
+## Real-World Examples
+
+Method overriding is useful when related objects perform the same operation differently.
+
+Examples include:
+
+* `Animal → Speak()` → Dog barks, Cat meows
+* `Vehicle → Move()` → Car drives, Boat sails
+* `Employee → Work()` → Manager manages, Lecturer teaches
+* `Shape → Draw()` → Circle draws a circle, Rectangle draws a rectangle
+* `Payment → ProcessPayment()` → Card and bank-transfer payments process differently
+
+## Why Use Method Overriding?
+
+Method overriding helps to:
+
+1. **Reuse code** through inheritance.
+2. **Customize behavior** for different derived classes.
+3. **Support polymorphism**.
+4. **Make applications easier to extend and maintain**.
+5. **Reduce the need for complex conditional statements** when handling different object types.
+
+## Summary
+
+Method overriding allows a derived class to **change or specialize the behavior inherited from a base class**. In C#, it is implemented using `virtual` in the base class and `override` in the derived class. Combined with polymorphism, it allows programs to work with different object types through a common base-class interface.
+
+
 Author
 
 Domo Ereku
+
