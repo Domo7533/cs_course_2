@@ -2008,6 +2008,121 @@ Method overriding helps to:
 Method overriding allows a derived class to **change or specialize the behavior inherited from a base class**. In C#, it is implemented using `virtual` in the base class and `override` in the derived class. Combined with polymorphism, it allows programs to work with different object types through a common base-class interface.
 
 
+## Abstract Classes and Methods
+
+An **abstract class** in C# is a class that cannot be instantiated directly. It is designed to serve as a **base class** for other classes. Abstract classes are useful when several related classes share common properties or methods, but some behavior must be implemented differently by each derived class.
+
+An abstract class can contain both **implemented methods** and **abstract methods**. An abstract method is declared without a method body and must be implemented by a derived class using the `override` keyword.
+
+### Basic Example
+
+```csharp
+abstract class Animal
+{
+    // Abstract method
+    public abstract void MakeSound();
+
+    // Regular method
+    public void Sleep()
+    {
+        Console.WriteLine("Animal is sleeping.");
+    }
+}
+
+class Dog : Animal
+{
+    public override void MakeSound()
+    {
+        Console.WriteLine("Dog says: Woof!");
+    }
+}
+
+class Cat : Animal
+{
+    public override void MakeSound()
+    {
+        Console.WriteLine("Cat says: Meow!");
+    }
+}
+```
+
+### Using the Abstract Class
+
+```csharp
+class Program
+{
+    static void Main()
+    {
+        Dog dog = new Dog();
+        Cat cat = new Cat();
+
+        dog.MakeSound();
+        dog.Sleep();
+
+        cat.MakeSound();
+        cat.Sleep();
+    }
+}
+```
+
+### Output
+
+```text
+Dog says: Woof!
+Animal is sleeping.
+Cat says: Meow!
+Animal is sleeping.
+```
+
+### Important Rules
+
+* An abstract class **cannot be instantiated directly**.
+* An abstract class can contain **abstract and non-abstract methods**.
+* An abstract method does not have an implementation in the abstract class.
+* A derived class must implement all inherited abstract methods unless the derived class is also abstract.
+* Abstract methods must be declared inside an abstract class.
+* The `override` keyword is used to provide the implementation of an abstract method.
+
+### Example of What Is Not Allowed
+
+```csharp
+Animal animal = new Animal(); // Error
+```
+
+Instead, create an object of a derived class:
+
+```csharp
+Animal animal = new Dog();
+
+animal.MakeSound();
+```
+
+This also demonstrates **polymorphism**, because an `Animal` reference can refer to a `Dog` object.
+
+### Abstract Class vs. Regular Class
+
+| Feature                         | Regular Class | Abstract Class |
+| ------------------------------- | ------------- | -------------- |
+| Can be instantiated             | Yes           | No             |
+| Can contain implemented methods | Yes           | Yes            |
+| Can contain abstract methods    | No            | Yes            |
+| Can have properties/fields      | Yes           | Yes            |
+| Can have constructors           | Yes           | Yes            |
+| Can be inherited                | Yes           | Yes            |
+
+### When to Use Abstract Classes
+
+Use an abstract class when you have several related classes that:
+
+1. Share common properties or behavior.
+2. Need a common base type.
+3. Require derived classes to provide their own implementation of certain methods.
+
+For example, `Animal` can provide common behavior such as `Sleep()`, while requiring each animal to implement its own `MakeSound()` method.
+
+
+
+
 Author
 
 Domo Ereku

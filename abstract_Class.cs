@@ -218,4 +218,46 @@ class Program
         car.Start();
     }
 }
+using System;
+
+abstract class Shape
+{
+    public abstract void Draw();
+
+    public void Describe()
+    {
+        Console.WriteLine("This is a shape.");
+    }
+}
+
+class Circle : Shape
+{
+    public override void Draw()
+    {
+        Console.WriteLine("Drawing a circle.");
+    }
+}
+
+class Rectangle : Shape
+{
+    public override void Draw()
+    {
+        Console.WriteLine("Drawing a rectangle.");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Shape circle = new Circle();
+        Shape rectangle = new Rectangle();
+
+        circle.Describe();
+        circle.Draw();
+
+        rectangle.Describe();
+        rectangle.Draw();
+    }
+}
 
