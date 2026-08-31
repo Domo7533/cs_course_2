@@ -2121,6 +2121,161 @@ Use an abstract class when you have several related classes that:
 For example, `Animal` can provide common behavior such as `Sleep()`, while requiring each animal to implement its own `MakeSound()` method.
 
 
+## Interfaces vs Abstract Classes
+
+In C#, both **interfaces** and **abstract classes** are used to define common behavior and provide a foundation for other classes. However, they are used in different situations.
+
+### Interfaces
+
+An **interface** defines a contract that a class must follow. It specifies what a class should do without necessarily defining how it should do it.
+
+```csharp
+interface IAnimal
+{
+    void Speak();
+}
+
+class Dog : IAnimal
+{
+    public void Speak()
+    {
+        Console.WriteLine("Dog says: Woof!");
+    }
+}
+```
+
+A class can implement **multiple interfaces**:
+
+```csharp
+class Employee : IWorker, IManager
+{
+    public void Work()
+    {
+        Console.WriteLine("Employee is working.");
+    }
+
+    public void Manage()
+    {
+        Console.WriteLine("Employee is managing.");
+    }
+}
+```
+
+### Abstract Classes
+
+An **abstract class** is a base class that can contain both implemented methods and abstract methods. Abstract methods must be implemented by derived classes.
+
+```csharp
+abstract class Animal
+{
+    public void Eat()
+    {
+        Console.WriteLine("Animal is eating.");
+    }
+
+    public abstract void Speak();
+}
+
+class Dog : Animal
+{
+    public override void Speak()
+    {
+        Console.WriteLine("Dog says: Woof!");
+    }
+}
+```
+
+### Key Differences
+
+| Feature              | Interface                                        | Abstract Class                                   |
+| -------------------- | ------------------------------------------------ | ------------------------------------------------ |
+| Purpose              | Defines a contract                               | Provides a common base                           |
+| Methods              | Can define method contracts and implementations  | Can contain both abstract and concrete methods   |
+| Fields               | Cannot have instance fields                      | Can have fields                                  |
+| Properties           | Supported                                        | Supported                                        |
+| Constructors         | No instance constructors                         | Can have constructors                            |
+| Multiple inheritance | A class can implement multiple interfaces        | A class can inherit only one abstract/base class |
+| Access modifiers     | Interface members are generally public contracts | Members can use different access modifiers       |
+| Best use             | Unrelated classes sharing capabilities           | Closely related classes sharing behavior         |
+
+### When to Use an Interface
+
+Use an interface when different classes need to support the same capability but may have completely different implementations.
+
+For example:
+
+```csharp
+interface IPayment
+{
+    void Pay(double amount);
+}
+
+class CashPayment : IPayment
+{
+    public void Pay(double amount)
+    {
+        Console.WriteLine($"Paid ₦{amount} with cash.");
+    }
+}
+
+class CardPayment : IPayment
+{
+    public void Pay(double amount)
+    {
+        Console.WriteLine($"Paid ₦{amount} with card.");
+    }
+}
+```
+
+Both classes support `IPayment`, even though their implementations may differ.
+
+### When to Use an Abstract Class
+
+Use an abstract class when classes have a strong relationship and should share common data or functionality.
+
+```csharp
+abstract class Vehicle
+{
+    public string Brand { get; set; }
+
+    public void Start()
+    {
+        Console.WriteLine("Vehicle started.");
+    }
+
+    public abstract void Drive();
+}
+
+class Car : Vehicle
+{
+    public override void Drive()
+    {
+        Console.WriteLine("Car is driving.");
+    }
+}
+```
+
+Here, `Car` inherits common functionality from `Vehicle` while providing its own implementation of `Drive()`.
+
+### Simple Rule
+
+A useful way to remember the difference is:
+
+> **Interface = What a class can do.**
+> **Abstract class = What a class is and what it shares with related classes.**
+
+For example:
+
+* `IPayable` → something that **can be paid**
+* `IPrintable` → something that **can be printed**
+* `Animal` → a base type for related animals
+* `Vehicle` → a base type for related vehicles
+
+### Summary
+
+Interfaces are best for defining **capabilities and contracts**, especially when multiple unrelated classes need the same behavior. Abstract classes are better when creating a **shared base class** containing common properties, methods, and behavior.
+
+Both are important tools for achieving **abstraction, polymorphism, code reuse, and flexible software design** in C#.
 
 
 Author
