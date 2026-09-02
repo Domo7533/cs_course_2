@@ -2277,6 +2277,156 @@ Interfaces are best for defining **capabilities and contracts**, especially when
 
 Both are important tools for achieving **abstraction, polymorphism, code reuse, and flexible software design** in C#.
 
+## Multiple Interface Implementations
+
+C# allows a class to implement **multiple interfaces**. This provides a way for a class to combine different behaviors without using multiple class inheritance.
+
+### Example
+
+```csharp
+interface IWork
+{
+    void Work();
+}
+
+interface IReport
+{
+    void GenerateReport();
+}
+
+interface IManage
+{
+    void ManageTeam();
+}
+
+class Manager : IWork, IReport, IManage
+{
+    public void Work()
+    {
+        Console.WriteLine("Manager is working.");
+    }
+
+    public void GenerateReport()
+    {
+        Console.WriteLine("Manager is generating a report.");
+    }
+
+    public void ManageTeam()
+    {
+        Console.WriteLine("Manager is managing the team.");
+    }
+}
+```
+
+The `Manager` class implements three interfaces:
+
+```csharp
+class Manager : IWork, IReport, IManage
+```
+
+Therefore, it must provide implementations for all the methods defined by those interfaces.
+
+### Using the Class
+
+```csharp
+class Program
+{
+    static void Main()
+    {
+        Manager manager = new Manager();
+
+        manager.Work();
+        manager.GenerateReport();
+        manager.ManageTeam();
+    }
+}
+```
+
+### Output
+
+```text
+Manager is working.
+Manager is generating a report.
+Manager is managing the team.
+```
+
+### Interface References
+
+A class implementing multiple interfaces can also be referenced through any of the interfaces it implements:
+
+```csharp
+Manager manager = new Manager();
+
+IWork worker = manager;
+IReport reporter = manager;
+IManage administrator = manager;
+
+worker.Work();
+reporter.GenerateReport();
+administrator.ManageTeam();
+```
+
+This demonstrates **polymorphism**, because the same `Manager` object can be treated as an `IWork`, `IReport`, or `IManage` reference.
+
+### Why Use Multiple Interfaces?
+
+Multiple interfaces are useful when a class has several independent responsibilities.
+
+For example:
+
+| Interface | Responsibility                   |
+| --------- | -------------------------------- |
+| `IWork`   | Defines working behavior         |
+| `IReport` | Defines reporting behavior       |
+| `IManage` | Defines team-management behavior |
+
+A class can implement only the capabilities it needs:
+
+```csharp
+class Developer : IWork, IReport
+{
+    public void Work()
+    {
+        Console.WriteLine("Developer is writing code.");
+    }
+
+    public void GenerateReport()
+    {
+        Console.WriteLine("Developer is generating a report.");
+    }
+}
+```
+
+The `Developer` class does not implement `IManage` because managing a team is not part of its defined responsibilities.
+
+### Multiple Interfaces vs. Multiple Class Inheritance
+
+C# does not support inheriting from multiple classes:
+
+```csharp
+// ❌ Not allowed
+class Manager : Employee, Person
+{
+}
+```
+
+However, a class can implement multiple interfaces:
+
+```csharp
+// ✅ Allowed
+class Manager : IWork, IReport, IManage
+{
+}
+```
+
+### Key Takeaways
+
+* A C# class can implement **multiple interfaces**.
+* Interfaces define **contracts or capabilities**.
+* The implementing class must provide the required method implementations.
+* Multiple interfaces promote **separation of responsibilities**.
+* Multiple interface implementations support **polymorphism**.
+* C# allows multiple interface implementation but does not allow multiple class inheritance.
 
 Author
 
